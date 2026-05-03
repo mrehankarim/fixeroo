@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Housing - Home Service",
+    "slug": "housing-home-service",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./src/assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./src/assets/icon.png"
+    },
+    "plugins": [
+      "expo-sqlite",
+      "expo-web-browser"
+    ]
+  }
+}
