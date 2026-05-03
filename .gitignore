@@ -4,10 +4,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Environment variables
+# Environment variables & sensitive configuration
 .env
 .env.local
 .env.*.local
+firebaseConfig.js
 
 # Generated documentation files
 AUTH_SYSTEM_DOCUMENTATION.md
