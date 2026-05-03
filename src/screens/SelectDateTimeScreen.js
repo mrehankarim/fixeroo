@@ -1,11 +1,10 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import Header from '../components/Header';
 import AppButton from '../components/AppButton';
 import { colors, fonts, spacing } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
 import { createBooking } from '../services/firestoreService';
-import { Alert } from 'react-native';
 
 export default function SelectDateTimeScreen({ route, navigation }) {
 

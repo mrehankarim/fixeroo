@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CategoryChip from '../components/CategoryChip';
@@ -6,8 +6,11 @@ import ServiceCard from '../components/ServiceCard';
 import OfferCard from '../components/OfferCard';
 import { dummyData } from '../constants/dummyData';
 import { colors, fonts, spacing } from '../constants/theme';
+import { useAuth } from '../context/AuthContext';
 
 export default function HomeScreen({ navigation }) {
+  const { user, userData } = useAuth();
+  const firstName = (userData?.name || user?.displayName || 'there').split(' ')[0];
   const topCategories = dummyData.categories.slice(0, 3);
   const cleaningServices = dummyData.services.filter(s => s.category === 'Cleaning');
 
@@ -16,7 +19,7 @@ export default function HomeScreen({ navigation }) {
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
 
         <View style={styles.header}>
-          <Text style={styles.greeting}>Hello, User!</Text>
+          <Text style={styles.greeting}>Hello, {firstName}!</Text>
           <TouchableOpacity style={styles.bellIcon}>
             <MaterialCommunityIcons name="bell-outline" size={24} color={colors.text} />
           </TouchableOpacity>

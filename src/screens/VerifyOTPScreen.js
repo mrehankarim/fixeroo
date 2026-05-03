@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 import AppInput from '../components/AppInput';
@@ -7,7 +7,7 @@ import { colors, spacing, fonts } from '../constants/theme';
 import { verifyOTP, resendOTP, getOTPExpiryTime } from '../services/otpService';
 import { markEmailAsVerified } from '../services/firestoreService';
 import { useAuth } from '../context/AuthContext';
-import { auth } from '../firebaseConfig';
+import { auth } from '../../firebaseConfig';
 
 export default function VerifyOTPScreen({ navigation, route }) {
   const { resetOTP } = useAuth();

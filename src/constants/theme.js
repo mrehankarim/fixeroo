@@ -1,12 +1,12 @@
-﻿export const colors = {
-  primary: '#2D6AFF',
+export const colors = {
+  primary: '#6C63FF',
   secondary: '#FF8C00',
   accent: '#FF6B6B',
   background: '#FFFFFF',
   surface: '#F5F7FA',
   text: '#1A1A2E',
   textLight: '#6C6C80',
-  border: '#E0E0E0',
+  border: '#E8E8E8',
   error: '#EF4444',
   success: '#10B981',
   warning: '#F59E0B',

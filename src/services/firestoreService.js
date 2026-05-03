@@ -1,4 +1,4 @@
-﻿import {
+import {
   collection,
   doc,
   setDoc,
@@ -10,7 +10,7 @@
   addDoc,
   orderBy,
 } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { db } from '../../firebaseConfig';
 
 const USERS_COLLECTION = 'users';
 const BOOKINGS_COLLECTION = 'bookings';
