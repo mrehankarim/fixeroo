@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { colors, fonts, spacing } from '../constants/theme';
 
@@ -17,11 +17,11 @@ export default function SplashScreen({ navigation }) {
         <View style={styles.logoPlaceholder}>
           <Text style={styles.logoText}>H</Text>
         </View>
-        
+
         <Text style={styles.title}>
           Plumber & expart{'\n'}nearby you
         </Text>
-        
+
         <Text style={styles.subtitle}>
           Lorem ipsum is a placeholder text commonly used to demonstrate the visual.
         </Text>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import Header from '../components/Header';
 import AppInput from '../components/AppInput';
@@ -19,7 +19,6 @@ export default function SignUpScreen({ navigation }) {
   const [errors, setErrors] = useState({});
   const [showPasswordHint, setShowPasswordHint] = useState(false);
 
-  // Validate form
   const validateForm = () => {
     const newErrors = {};
 
@@ -63,7 +62,6 @@ export default function SignUpScreen({ navigation }) {
 
     setLoading(true);
     try {
-      // Sign up user
       const result = await signup(email.trim(), password, {
         name: name.trim(),
         phone: phone.trim(),
@@ -71,21 +69,14 @@ export default function SignUpScreen({ navigation }) {
       });
 
       if (result.success) {
-        // Send OTP for email verification
         const otpResult = await sendOTPToEmail(email.trim());
-        
-        // Mark OTP as sent in context
         setOTPSent(email.trim());
-
-        // Show development OTP in console (for testing)
         if (otpResult.developmentOTP) {
           Alert.alert(
             'Development Mode',
             `Your OTP is: ${otpResult.developmentOTP}\n\n(This is shown for testing only. In production, check your email.)`
           );
         }
-
-        // Navigate to OTP verification
         navigation.navigate('VerifyOTP', { email: email.trim() });
       }
     } catch (error) {
@@ -99,14 +90,13 @@ export default function SignUpScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Sign Up" />
-      <KeyboardAvoidingView 
-        style={styles.keyboardView} 
+      <KeyboardAvoidingView
+        style={styles.keyboardView}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
       >
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
           <View style={styles.form}>
-            {/* Password Hint Toggle */}
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => setShowPasswordHint(!showPasswordHint)}
               style={styles.hintToggle}
             >
@@ -199,18 +189,18 @@ export default function SignUpScreen({ navigation }) {
               editable={!loading}
               error={errors.confirmPassword}
             />
-            
-            <AppButton 
+
+            <AppButton
               title={loading ? "Creating Account..." : "Sign Up"}
               onPress={handleSignUp}
               style={styles.button}
               disabled={loading}
             />
           </View>
-          
+
           <View style={styles.bottomRow}>
             <Text style={styles.bottomText}>Already have an account? </Text>
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => navigation.navigate('LogIn')}
               disabled={loading}
             >

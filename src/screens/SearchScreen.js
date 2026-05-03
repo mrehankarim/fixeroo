@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, FlatList } from 'react-native';
 import Header from '../components/Header';
 import AppInput from '../components/AppInput';
@@ -6,7 +6,7 @@ import { colors, fonts, spacing } from '../constants/theme';
 
 export default function SearchScreen() {
   const [query, setQuery] = useState('');
-  
+
   const recentSearches = ['AC Repair', 'Home Cleaning', 'Plumbing Check'];
 
   return (
@@ -19,7 +19,7 @@ export default function SearchScreen() {
           value={query}
           onChangeText={setQuery}
         />
-        
+
         <Text style={styles.sectionTitle}>Recent Searches</Text>
         <FlatList
           data={recentSearches}

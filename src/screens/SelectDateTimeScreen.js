@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import Header from '../components/Header';
 import AppButton from '../components/AppButton';
 import { colors, fonts, spacing } from '../constants/theme';
+import { useAuth } from '../context/AuthContext';
+import { createBooking } from '../services/firestoreService';
+import { Alert } from 'react-native';
 
 export default function SelectDateTimeScreen({ route, navigation }) {
-  // Generate 7 days starting from today
+
   const generateDates = () => {
     const dates = [];
     const today = new Date();
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    
+
     for (let i = 0; i < 7; i++) {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
@@ -32,15 +35,51 @@ export default function SelectDateTimeScreen({ route, navigation }) {
 
   const [selectedDate, setSelectedDate] = useState(dates[0].id);
   const [selectedTime, setSelectedTime] = useState(timeSlots[0]);
+  const [loading, setLoading] = useState(false);
 
-  const handleConfirm = () => {
-    navigation.navigate('Bookings');
+  const { user } = useAuth();
+  const { service, description, address, promoCode } = route.params || {};
+
+  const handleConfirm = async () => {
+    if (!user) {
+      Alert.alert('Error', 'You must be logged in to book a service');
+      return;
+    }
+
+    const selectedDateObj = dates.find(d => d.id === selectedDate);
+
+    try {
+      setLoading(true);
+      await createBooking({
+        userId: user.uid,
+        serviceTitle: service?.title,
+        serviceId: service?.id,
+        category: service?.category,
+        price: service?.price,
+        description,
+        address,
+        promoCode,
+        bookingDate: selectedDateObj?.fullDate.toISOString(),
+        bookingTime: selectedTime,
+      });
+
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'MainTabs' }],
+      });
+      navigation.navigate('Bookings');
+    } catch (error) {
+      Alert.alert('Booking Failed', error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderDateItem = ({ item }) => {
     const isSelected = selectedDate === item.id;
     return (
-      <TouchableOpacity 
+      <TouchableOpacity
         style={[styles.dateCard, isSelected && styles.dateCardSelected]}
         onPress={() => setSelectedDate(item.id)}
       >
@@ -55,7 +94,7 @@ export default function SelectDateTimeScreen({ route, navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Select Date & Time" />
-      
+
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.sectionTitle}>Select Date</Text>
         <FlatList
@@ -85,7 +124,7 @@ export default function SelectDateTimeScreen({ route, navigation }) {
       </ScrollView>
 
       <View style={styles.footer}>
-        <AppButton title="Confirm Booking" onPress={handleConfirm} />
+        <AppButton title="Confirm Booking" onPress={handleConfirm} loading={loading} />
       </View>
     </SafeAreaView>
   );
@@ -160,7 +199,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.l,
     backgroundColor: colors.surface,
     borderRadius: 8,
-    width: '30%', // Approx 3 columns
+    width: '30%',
     alignItems: 'center',
   },
   slotChipSelected: {

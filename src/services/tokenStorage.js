@@ -1,13 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+﻿import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TOKEN_KEY = 'userToken';
 const REFRESH_TOKEN_KEY = 'userRefreshToken';
 const USER_ID_KEY = 'userId';
 const OTP_STORAGE_KEY = 'otpData';
 
-/**
- * Store authentication token
- */
 export const storeToken = async (token) => {
   try {
     await AsyncStorage.setItem(TOKEN_KEY, token);
@@ -17,9 +14,6 @@ export const storeToken = async (token) => {
   }
 };
 
-/**
- * Retrieve authentication token
- */
 export const getToken = async () => {
   try {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
@@ -30,9 +24,6 @@ export const getToken = async () => {
   }
 };
 
-/**
- * Remove authentication token
- */
 export const removeToken = async () => {
   try {
     await AsyncStorage.removeItem(TOKEN_KEY);
@@ -42,9 +33,6 @@ export const removeToken = async () => {
   }
 };
 
-/**
- * Store refresh token
- */
 export const storeRefreshToken = async (refreshToken) => {
   try {
     await AsyncStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
@@ -54,9 +42,6 @@ export const storeRefreshToken = async (refreshToken) => {
   }
 };
 
-/**
- * Retrieve refresh token
- */
 export const getRefreshToken = async () => {
   try {
     const refreshToken = await AsyncStorage.getItem(REFRESH_TOKEN_KEY);
@@ -67,9 +52,6 @@ export const getRefreshToken = async () => {
   }
 };
 
-/**
- * Remove refresh token
- */
 export const removeRefreshToken = async () => {
   try {
     await AsyncStorage.removeItem(REFRESH_TOKEN_KEY);
@@ -79,9 +61,6 @@ export const removeRefreshToken = async () => {
   }
 };
 
-/**
- * Store user ID
- */
 export const storeUserId = async (userId) => {
   try {
     await AsyncStorage.setItem(USER_ID_KEY, userId);
@@ -91,9 +70,6 @@ export const storeUserId = async (userId) => {
   }
 };
 
-/**
- * Retrieve user ID
- */
 export const getUserId = async () => {
   try {
     const userId = await AsyncStorage.getItem(USER_ID_KEY);
@@ -104,15 +80,11 @@ export const getUserId = async () => {
   }
 };
 
-/**
- * Store OTP data temporarily (for verification)
- * OTP data includes: email, otp, expiresAt, attempts
- */
 export const storeOTPData = async (otpData) => {
   try {
     const dataWithExpiry = {
       ...otpData,
-      expiresAt: Date.now() + 10 * 60 * 1000, // 10 minutes
+      expiresAt: Date.now() + 10 * 60 * 1000,
       createdAt: Date.now(),
     };
     await AsyncStorage.setItem(OTP_STORAGE_KEY, JSON.stringify(dataWithExpiry));
@@ -122,9 +94,6 @@ export const storeOTPData = async (otpData) => {
   }
 };
 
-/**
- * Retrieve OTP data
- */
 export const getOTPData = async () => {
   try {
     const otpData = await AsyncStorage.getItem(OTP_STORAGE_KEY);
@@ -132,7 +101,7 @@ export const getOTPData = async () => {
 
     const data = JSON.parse(otpData);
     
-    // Check if OTP has expired
+
     if (data.expiresAt && Date.now() > data.expiresAt) {
       await removeOTPData();
       return null;
@@ -145,9 +114,6 @@ export const getOTPData = async () => {
   }
 };
 
-/**
- * Remove OTP data
- */
 export const removeOTPData = async () => {
   try {
     await AsyncStorage.removeItem(OTP_STORAGE_KEY);
@@ -157,9 +123,6 @@ export const removeOTPData = async () => {
   }
 };
 
-/**
- * Clear all authentication data
- */
 export const clearAllAuthData = async () => {
   try {
     await Promise.all([
@@ -174,9 +137,6 @@ export const clearAllAuthData = async () => {
   }
 };
 
-/**
- * Check if user is logged in (has valid token)
- */
 export const isUserLoggedIn = async () => {
   try {
     const token = await getToken();

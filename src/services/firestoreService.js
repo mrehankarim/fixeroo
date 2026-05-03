@@ -1,4 +1,4 @@
-import {
+﻿import {
   collection,
   doc,
   setDoc,
@@ -7,14 +7,14 @@ import {
   query,
   where,
   getDocs,
+  addDoc,
+  orderBy,
 } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
 const USERS_COLLECTION = 'users';
+const BOOKINGS_COLLECTION = 'bookings';
 
-/**
- * Store user data in Firestore
- */
 export const createUserProfile = async (userId, userData) => {
   try {
     const userDocRef = doc(db, USERS_COLLECTION, userId);
@@ -31,16 +31,16 @@ export const createUserProfile = async (userId, userData) => {
       pinCode: userData.pinCode || '',
       isEmailVerified: userData.isEmailVerified || false,
       isPhoneVerified: userData.isPhoneVerified || false,
-      userType: userData.userType || 'customer', // customer or provider
+      userType: userData.userType || 'customer',
       createdAt: userData.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       lastLogin: new Date().toISOString(),
       accountStatus: 'active',
       ratings: 0,
       totalBookings: 0,
-      services: userData.services || [], // For service providers
+      services: userData.services || [],
       bio: userData.bio || '',
-      businessName: userData.businessName || '', // For service providers
+      businessName: userData.businessName || '',
     };
 
     await setDoc(userDocRef, profileData);
@@ -51,9 +51,6 @@ export const createUserProfile = async (userId, userData) => {
   }
 };
 
-/**
- * Get user data from Firestore
- */
 export const getUserData = async (userId) => {
   try {
     const userDocRef = doc(db, USERS_COLLECTION, userId);
@@ -69,9 +66,6 @@ export const getUserData = async (userId) => {
   }
 };
 
-/**
- * Update user profile
- */
 export const updateUserProfile = async (userId, updates) => {
   try {
     const userDocRef = doc(db, USERS_COLLECTION, userId);
@@ -89,9 +83,6 @@ export const updateUserProfile = async (userId, updates) => {
   }
 };
 
-/**
- * Update last login timestamp
- */
 export const updateLastLogin = async (userId) => {
   try {
     const userDocRef = doc(db, USERS_COLLECTION, userId);
@@ -100,13 +91,10 @@ export const updateLastLogin = async (userId) => {
     });
   } catch (error) {
     console.error('Error updating last login:', error);
-    // Don't throw - this is non-critical
+
   }
 };
 
-/**
- * Mark email as verified
- */
 export const markEmailAsVerified = async (userId) => {
   try {
     const userDocRef = doc(db, USERS_COLLECTION, userId);
@@ -120,9 +108,6 @@ export const markEmailAsVerified = async (userId) => {
   }
 };
 
-/**
- * Check if email already exists
- */
 export const checkEmailExists = async (email) => {
   try {
     const usersRef = collection(db, USERS_COLLECTION);
@@ -135,9 +120,6 @@ export const checkEmailExists = async (email) => {
   }
 };
 
-/**
- * Get user by email
- */
 export const getUserByEmail = async (email) => {
   try {
     const usersRef = collection(db, USERS_COLLECTION);
@@ -154,12 +136,9 @@ export const getUserByEmail = async (email) => {
   }
 };
 
-/**
- * Delete user profile (admin/cleanup function)
- */
 export const deleteUserProfile = async (userId) => {
   try {
-    // In production, you might want to soft-delete instead
+
     const userDocRef = doc(db, USERS_COLLECTION, userId);
     await updateDoc(userDocRef, {
       accountStatus: 'deleted',
@@ -167,6 +146,48 @@ export const deleteUserProfile = async (userId) => {
     });
   } catch (error) {
     console.error('Error deleting user profile:', error);
+    throw error;
+  }
+};
+
+export const createBooking = async (bookingData) => {
+  try {
+    const bookingsRef = collection(db, BOOKINGS_COLLECTION);
+    
+    const newBooking = {
+      ...bookingData,
+      status: 'Confirmed',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const docRef = await addDoc(bookingsRef, newBooking);
+    return { id: docRef.id, ...newBooking };
+  } catch (error) {
+    console.error('Error creating booking:', error);
+    throw error;
+  }
+};
+
+export const getUserBookings = async (userId) => {
+  try {
+    const bookingsRef = collection(db, BOOKINGS_COLLECTION);
+    const q = query(
+      bookingsRef, 
+      where('userId', '==', userId),
+      orderBy('createdAt', 'desc')
+    );
+    
+    const querySnapshot = await getDocs(q);
+    const bookings = [];
+    
+    querySnapshot.forEach((doc) => {
+      bookings.push({ id: doc.id, ...doc.data() });
+    });
+    
+    return bookings;
+  } catch (error) {
+    console.error('Error getting user bookings:', error);
     throw error;
   }
 };

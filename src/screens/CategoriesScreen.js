@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Header from '../components/Header';
@@ -20,24 +20,21 @@ const iconMap = {
 export default function CategoriesScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredCategories = dummyData.categories.filter(cat => 
+  const filteredCategories = dummyData.categories.filter(cat =>
     cat.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const renderCategory = ({ item }) => (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.categoryCard}
       onPress={() => {
-        // Option 1: navigate back with params
-        // navigation.navigate('Home', { selectedCategory: item });
-        // Option 2: simply pop back
-        navigation.goBack();
+        navigation.navigate('CategoryServices', { category: item });
       }}
     >
-      <MaterialCommunityIcons 
-        name={iconMap[item] || 'view-grid'} 
-        size={32} 
-        color={colors.primary} 
+      <MaterialCommunityIcons
+        name={iconMap[item] || 'view-grid'}
+        size={32}
+        color={colors.primary}
       />
       <Text style={styles.categoryText}>{item}</Text>
     </TouchableOpacity>
@@ -46,7 +43,7 @@ export default function CategoriesScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Search Category" />
-      
+
       <View style={styles.content}>
         <View style={styles.searchContainer}>
           <MaterialCommunityIcons name="magnify" size={20} color={colors.textLight} style={styles.searchIcon} />
@@ -60,7 +57,7 @@ export default function CategoriesScreen({ navigation }) {
         </View>
 
         <Text style={styles.sectionTitle}>All Categories</Text>
-        
+
         <FlatList
           data={filteredCategories}
           keyExtractor={(item) => item}
@@ -117,7 +114,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.l,
   },
   categoryCard: {
-    width: '31%', // roughly (100% - 2*spacing) / 3
+    width: '31%',
     aspectRatio: 1,
     backgroundColor: colors.surface,
     borderRadius: 12,

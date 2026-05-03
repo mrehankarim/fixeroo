@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import Header from '../components/Header';
 import AppInput from '../components/AppInput';
@@ -40,14 +40,14 @@ export default function LogInScreen({ navigation }) {
       const result = await login(email.trim(), password);
 
       if (result.success && result.user) {
-        // Update last login
+
         try {
           await updateLastLogin(result.user.uid);
         } catch (error) {
           console.log('Error updating last login:', error);
         }
 
-        // Navigate to main app
+
         navigation.replace('MainTabs');
       }
     } catch (error) {
@@ -61,8 +61,8 @@ export default function LogInScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Log In" />
-      <KeyboardAvoidingView 
-        style={styles.content} 
+      <KeyboardAvoidingView
+        style={styles.content}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.form}>
@@ -94,25 +94,25 @@ export default function LogInScreen({ navigation }) {
             editable={!loading}
             error={errors.password}
           />
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.forgotPassword}
             onPress={() => navigation.navigate('ForgotPassword')}
             disabled={loading}
           >
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
-          
-          <AppButton 
+
+          <AppButton
             title={loading ? "Logging in..." : "Log In"}
             onPress={handleLogin}
             disabled={loading}
           />
         </View>
-        
+
         <View style={styles.bottomRow}>
           <Text style={styles.bottomText}>Don't have an account? </Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={() => navigation.navigate('SignUp')}
             disabled={loading}
           >

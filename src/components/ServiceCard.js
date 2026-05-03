@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, fonts, spacing } from '../constants/theme';
@@ -29,14 +29,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: spacing.l,
-    marginRight: spacing.l, // if used in horizontal list
+    marginRight: spacing.l,
     minWidth: 250,
   },
   iconContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(45, 106, 255, 0.1)', // light primary
+    backgroundColor: 'rgba(45, 106, 255, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: spacing.m,

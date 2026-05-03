@@ -1,4 +1,4 @@
-import {
+﻿import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
@@ -11,22 +11,15 @@ import {
   signOut,
 } from "firebase/auth";
 
-import { auth } from "../firebaseConfig";
+import { auth } from "../../firebaseConfig";
 import { createUserProfile } from "./firestoreService";
 import { storeToken, storeUserId } from "./tokenStorage";
 
-/**
- * Validate email format
- */
 export const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
-/**
- * Validate password strength
- * Requirements: at least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
- */
 export const validatePassword = (password) => {
   if (password.length < 8) {
     return { valid: false, message: "Password must be at least 8 characters" };
@@ -46,20 +39,14 @@ export const validatePassword = (password) => {
   return { valid: true };
 };
 
-/**
- * Validate phone number (basic validation)
- */
 export const validatePhone = (phone) => {
-  const phoneRegex = /^[0-9]{10}$/; // Simple 10-digit validation
+  const phoneRegex = /^[0-9]{10}$/;
   return phoneRegex.test(phone.replace(/\D/g, ""));
 };
 
-/**
- * Sign up new user with email and password
- */
 export const signup = async (email, password, userData) => {
   try {
-    // Validate inputs
+
     if (!validateEmail(email)) {
       throw new Error("Invalid email format");
     }
@@ -69,18 +56,18 @@ export const signup = async (email, password, userData) => {
       throw new Error(passwordValidation.message);
     }
 
-    // Create Firebase auth user
+
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const firebaseUser = userCredential.user;
 
-    // Update Firebase user profile with display name
+
     if (userData.name) {
       await updateProfile(firebaseUser, {
         displayName: userData.name,
       });
     }
 
-    // Create user profile in Firestore
+
     const profileData = await createUserProfile(firebaseUser.uid, {
       email,
       name: userData.name,
@@ -90,7 +77,7 @@ export const signup = async (email, password, userData) => {
       createdAt: new Date().toISOString(),
     });
 
-    // Store tokens
+
     const token = firebaseUser.getIdToken ? await firebaseUser.getIdToken() : firebaseUser.uid;
     await storeToken(token);
     await storeUserId(firebaseUser.uid);
@@ -106,12 +93,9 @@ export const signup = async (email, password, userData) => {
   }
 };
 
-/**
- * Login user with email and password
- */
 export const login = async (email, password) => {
   try {
-    // Validate inputs
+
     if (!validateEmail(email)) {
       throw new Error("Invalid email format");
     }
@@ -119,7 +103,7 @@ export const login = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const firebaseUser = userCredential.user;
 
-    // Store tokens
+
     const token = firebaseUser.getIdToken ? await firebaseUser.getIdToken() : firebaseUser.uid;
     await storeToken(token);
     await storeUserId(firebaseUser.uid);
@@ -143,9 +127,6 @@ export const login = async (email, password) => {
   }
 };
 
-/**
- * Send password reset email
- */
 export const sendPasswordReset = async (email) => {
   try {
     if (!validateEmail(email)) {
@@ -160,7 +141,7 @@ export const sendPasswordReset = async (email) => {
   } catch (error) {
     console.error("Send password reset error:", error);
     if (error.code === "auth/user-not-found") {
-      // For security, don't reveal if email exists
+
       return {
         success: true,
         message: "If an account exists with this email, you will receive a password reset link",
@@ -170,9 +151,6 @@ export const sendPasswordReset = async (email) => {
   }
 };
 
-/**
- * Verify password reset code and reset password
- */
 export const resetPassword = async (code, newPassword) => {
   try {
     const passwordValidation = validatePassword(newPassword);
@@ -180,10 +158,10 @@ export const resetPassword = async (code, newPassword) => {
       throw new Error(passwordValidation.message);
     }
 
-    // Verify the reset code is valid
+
     await verifyPasswordResetCode(auth, code);
 
-    // Reset the password
+
     await confirmPasswordReset(auth, code, newPassword);
 
     return {
@@ -199,9 +177,6 @@ export const resetPassword = async (code, newPassword) => {
   }
 };
 
-/**
- * Change password for logged-in user
- */
 export const changePassword = async (currentPassword, newPassword) => {
   try {
     const user = auth.currentUser;
@@ -214,11 +189,11 @@ export const changePassword = async (currentPassword, newPassword) => {
       throw new Error(passwordValidation.message);
     }
 
-    // Reauthenticate user
+
     const credential = EmailAuthProvider.credential(user.email, currentPassword);
     await reauthenticateWithCredential(user, credential);
 
-    // Update password
+
     await updatePassword(user, newPassword);
 
     return {
@@ -234,9 +209,6 @@ export const changePassword = async (currentPassword, newPassword) => {
   }
 };
 
-/**
- * Logout user
- */
 export const logout = async () => {
   try {
     await signOut(auth);
@@ -250,16 +222,10 @@ export const logout = async () => {
   }
 };
 
-/**
- * Get current user
- */
 export const getCurrentUser = () => {
   return auth.currentUser;
 };
 
-/**
- * Get user ID token
- */
 export const getIdToken = async () => {
   try {
     const user = auth.currentUser;

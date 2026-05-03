@@ -1,4 +1,4 @@
-export const colors = {
+﻿export const colors = {
   primary: '#2D6AFF',
   secondary: '#FF8C00',
   accent: '#FF6B6B',
@@ -19,7 +19,6 @@ export const fonts = {
   bold: 'Poppins_700Bold',
 };
 
-// Spacing scale based on horizontal unit 4
 export const spacing = {
   xs: 4,
   s: 8,

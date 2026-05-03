@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -16,9 +16,9 @@ export default function Header({ title, showBack = true, rightAction, rightIcon 
       ) : (
         <View style={styles.iconPlaceholder} />
       )}
-      
+
       <Text style={styles.title} numberOfLines={1}>{title}</Text>
-      
+
       {rightAction && rightIcon ? (
         <TouchableOpacity style={styles.iconButton} onPress={rightAction}>
           <MaterialCommunityIcons name={rightIcon} size={24} color={colors.text} />
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     padding: spacing.xs,
   },
   iconPlaceholder: {
-    width: 32, // roughly the size of iconButton
+    width: 32,
   },
   title: {
     flex: 1,

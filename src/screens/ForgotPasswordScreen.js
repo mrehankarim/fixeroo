@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import Header from '../components/Header';
 import AppInput from '../components/AppInput';
@@ -15,7 +15,6 @@ export default function ForgotPasswordScreen({ navigation }) {
   const handleSendReset = async () => {
     setError('');
 
-    // Validate email
     if (!email.trim()) {
       setError('Please enter your email');
       return;

@@ -1,20 +1,10 @@
-import { storeOTPData, getOTPData } from './tokenStorage';
+﻿import { storeOTPData, getOTPData } from './tokenStorage';
 
-/**
- * Generate a random 6-digit OTP
- */
 const generateOTP = () => {
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   return otp;
 };
 
-/**
- * Send OTP via email (mocked for now - in production use Firebase Functions or email service)
- * In production, you should use:
- * - Firebase Cloud Functions with nodemailer
- * - SendGrid/Mailgun/Twilio API
- * - Firebase Authentication's sendSignInLinkToEmail
- */
 export const sendOTPToEmail = async (email) => {
   try {
     const otp = generateOTP();
@@ -22,25 +12,25 @@ export const sendOTPToEmail = async (email) => {
     console.log(`[DEVELOPMENT] OTP for ${email}: ${otp}`);
     console.log('[DEVELOPMENT] In production, this would be sent via email');
 
-    // Store OTP data locally with expiry
+
     await storeOTPData({
       email,
       otp,
       attempts: 0,
     });
 
-    // In production, you would call a backend endpoint:
-    // const response = await fetch('YOUR_BACKEND/send-otp', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ email, otp }),
-    // });
+
+
+
+
+
+
 
     return {
       success: true,
       message: 'OTP sent to email',
       email,
-      // FOR DEVELOPMENT ONLY - Remove in production
+
       developmentOTP: otp,
     };
   } catch (error) {
@@ -49,9 +39,6 @@ export const sendOTPToEmail = async (email) => {
   }
 };
 
-/**
- * Verify OTP
- */
 export const verifyOTP = async (email, otp) => {
   try {
     const otpData = await getOTPData();
@@ -65,7 +52,7 @@ export const verifyOTP = async (email, otp) => {
     }
 
     if (otpData.otp !== otp) {
-      // Increment failed attempts
+
       otpData.attempts = (otpData.attempts || 0) + 1;
       
       if (otpData.attempts >= 5) {
@@ -76,7 +63,7 @@ export const verifyOTP = async (email, otp) => {
       throw new Error('Invalid OTP. Please try again.');
     }
 
-    // OTP is valid
+
     return {
       success: true,
       message: 'OTP verified successfully',
@@ -88,12 +75,9 @@ export const verifyOTP = async (email, otp) => {
   }
 };
 
-/**
- * Resend OTP (rate limiting in production recommended)
- */
 export const resendOTP = async (email) => {
   try {
-    // In production, implement rate limiting here
+
     return await sendOTPToEmail(email);
   } catch (error) {
     console.error('Error resending OTP:', error);
@@ -101,9 +85,6 @@ export const resendOTP = async (email) => {
   }
 };
 
-/**
- * Get remaining OTP expiry time in seconds
- */
 export const getOTPExpiryTime = async () => {
   try {
     const otpData = await getOTPData();

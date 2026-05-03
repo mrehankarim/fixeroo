@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect, useCallback } from 'react';
-import { auth } from '../firebaseConfig';
+﻿import React, { createContext, useState, useEffect, useCallback } from 'react';
+import { auth } from '../../firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUserData } from '../services/firestoreService';
@@ -14,32 +14,31 @@ export const AuthProvider = ({ children }) => {
   const [otpVerificationEmail, setOtpVerificationEmail] = useState(null);
   const [authError, setAuthError] = useState(null);
 
-  // Monitor auth state changes
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       try {
         if (authUser) {
-          // User is logged in
+
           setUser(authUser);
           
-          // Fetch user data from Firestore
+
           try {
             const userData = await getUserData(authUser.uid);
             if (userData) {
               setUserData(userData);
-              // Cache user data locally
+
               await AsyncStorage.setItem('userData', JSON.stringify(userData));
             }
           } catch (error) {
             console.log('Error fetching user data:', error);
-            // Try to get from cached data if Firestore fails
+
             const cachedData = await AsyncStorage.getItem('userData');
             if (cachedData) {
               setUserData(JSON.parse(cachedData));
             }
           }
         } else {
-          // User is logged out
           setUser(null);
           setUserData(null);
           setIsOTPSent(false);

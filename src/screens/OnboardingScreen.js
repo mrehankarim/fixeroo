@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import AppButton from '../components/AppButton';
 import { colors, fonts, spacing } from '../constants/theme';
@@ -14,38 +14,38 @@ export default function OnboardingScreen({ navigation }) {
         <Text style={styles.brand}>Housing</Text>
         <Text style={styles.tagline}>Home Services</Text>
       </View>
-      
+
       <View style={styles.bottomSection}>
-        <AppButton 
-          title="Log In" 
-          onPress={() => navigation.navigate('LogIn')} 
+        <AppButton
+          title="Log In"
+          onPress={() => navigation.navigate('LogIn')}
           style={styles.button}
         />
-        
-        <AppButton 
-          title="Sign Up" 
+
+        <AppButton
+          title="Sign Up"
           variant="outline"
-          onPress={() => navigation.navigate('SignUp')} 
+          onPress={() => navigation.navigate('SignUp')}
           style={styles.button}
         />
-        
+
         <View style={styles.dividerContainer}>
           <View style={styles.line} />
           <Text style={styles.orText}>Or</Text>
           <View style={styles.line} />
         </View>
-        
-        <AppButton 
-          title="Continue with Google" 
+
+        <AppButton
+          title="Continue with Google"
           icon="google"
           variant="outline"
           onPress={handleHomeSimulation}
           style={styles.socialButton}
           textStyle={{ color: colors.text }}
         />
-        
-        <AppButton 
-          title="Continue with Facebook" 
+
+        <AppButton
+          title="Continue with Facebook"
           icon="facebook"
           onPress={handleHomeSimulation}
           style={[styles.socialButton, { backgroundColor: '#1877F2', borderWidth: 0 }]}

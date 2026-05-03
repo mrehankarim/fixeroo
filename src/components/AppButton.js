@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { colors, fonts, spacing } from '../constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';

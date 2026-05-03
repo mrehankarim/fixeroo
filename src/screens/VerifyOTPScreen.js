@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 import AppInput from '../components/AppInput';
@@ -15,15 +15,15 @@ export default function VerifyOTPScreen({ navigation, route }) {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
+  const [timeLeft, setTimeLeft] = useState(600);
   const [error, setError] = useState('');
 
-  // Timer for OTP expiry
+
   useEffect(() => {
     const timer = setInterval(async () => {
       const remaining = await getOTPExpiryTime();
       setTimeLeft(Math.max(0, remaining));
-      
+
       if (remaining === 0) {
         clearInterval(timer);
       }
@@ -48,13 +48,13 @@ export default function VerifyOTPScreen({ navigation, route }) {
     setError('');
 
     try {
-      // Verify OTP
+
       await verifyOTP(email || auth.currentUser?.email, otp);
 
-      // Mark email as verified in Firestore
+
       await markEmailAsVerified(auth.currentUser.uid);
 
-      // Clear OTP state
+
       resetOTP();
 
       Alert.alert(
@@ -82,7 +82,7 @@ export default function VerifyOTPScreen({ navigation, route }) {
 
     try {
       const result = await resendOTP(email || auth.currentUser?.email);
-      
+
       if (result.developmentOTP) {
         Alert.alert(
           'OTP Resent',
@@ -144,7 +144,7 @@ export default function VerifyOTPScreen({ navigation, route }) {
           placeholder="Enter 4-digit OTP"
           value={otp}
           onChangeText={(text) => {
-            setOtp(text.slice(0, 6)); // Allow up to 6 digits just in case
+            setOtp(text.slice(0, 6));
             if (error) setError('');
           }}
           keyboardType="number-pad"
@@ -159,7 +159,7 @@ export default function VerifyOTPScreen({ navigation, route }) {
           </Text>
         </View>
 
-        <AppButton 
+        <AppButton
           title={loading ? "Verifying..." : "Verify OTP"}
           onPress={handleVerifyOTP}
           style={styles.button}

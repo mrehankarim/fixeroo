@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -8,7 +8,6 @@ import { ActivityIndicator, View } from 'react-native';
 import { colors } from '../constants/theme';
 import { useAuth } from '../context/AuthContext';
 
-// Screens
 import SplashScreen from '../screens/SplashScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
 import LogInScreen from '../screens/LogInScreen';
@@ -19,12 +18,12 @@ import CategoriesScreen from '../screens/CategoriesScreen';
 import BookingsScreen from '../screens/BookingsScreen';
 import AccountScreen from '../screens/AccountScreen';
 
-// Other screens
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import VerifyOTPScreen from '../screens/VerifyOTPScreen';
 import SearchScreen from '../screens/SearchScreen';
 import BookServiceScreen from '../screens/BookServiceScreen';
 import SelectDateTimeScreen from '../screens/SelectDateTimeScreen';
+import CategoryServicesScreen from '../screens/CategoryServicesScreen';
 
 const MyTheme = { ...DefaultTheme, colors: { ...DefaultTheme.colors, primary: colors.primary, background: colors.background, card: colors.background, text: colors.text, border: colors.border, }, };
 const Stack = createStackNavigator();
@@ -90,7 +89,7 @@ export default function AppNavigator() {
         }}
       >
         {!isAuthenticated ? (
-          // Auth Stack - for non-authenticated users
+
           <Stack.Group>
             <Stack.Screen name="Splash" component={SplashScreen} />
             <Stack.Screen name="Onboarding" component={OnboardingScreen} />
@@ -100,12 +99,12 @@ export default function AppNavigator() {
             <Stack.Screen name="VerifyOTP" component={VerifyOTPScreen} />
           </Stack.Group>
         ) : (
-          // App Stack - for authenticated users
+
           <Stack.Group>
-            {/* Main app with bottom tabs */}
+            {}
             <Stack.Screen name="MainTabs" component={MainTabs} />
 
-            {/* Additional screens that overlay the main app */}
+            {}
             <Stack.Screen
               name="Search"
               component={SearchScreen}
@@ -123,6 +122,13 @@ export default function AppNavigator() {
             <Stack.Screen
               name="SelectDateTime"
               component={SelectDateTimeScreen}
+              options={{
+                animationEnabled: true,
+              }}
+            />
+            <Stack.Screen
+              name="CategoryServices"
+              component={CategoryServicesScreen}
               options={{
                 animationEnabled: true,
               }}
